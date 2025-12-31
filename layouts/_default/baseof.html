@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    {{ partial "head.html" . }}
+</head>
+
+<body>
+    <main>
+        {{ block "main" . }}{{ end }}
+    </main>
+
+    {{ $js := resources.Get "js/main.js" | resources.Minify | resources.Fingerprint }}
+    <script src="{{ $js.Permalink }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+{{ define "main" }}
+<!-- Hero Section -->
+<section id="hero" class="hero-section">
+    <div class="hero-content fade-in">
+        <h1 class="hero-title">Para Araceli</h1>
+        <p class="hero-subtitle">Te amo más de lo que las palabras pueden expresar.</p>
+        <div class="hero-buttons">
+            <a href="#gallery" class="btn btn-primary">Ver fotos</a>
+            <a href="#letters" class="btn btn-secondary">Ir a cartas</a>
+        </div>
+    </div>
+</section>
+
+<!-- Photo Grid Section -->
+<section id="gallery" class="gallery-section container">
+    <h2 class="section-title">Nuestros Momentos</h2>
+    <div class="photo-grid">
+        {{ range .Site.Data.photos }}
+        <div class="photo-item" data-id="{{ .id }}" role="button" tabindex="0">
+            <img src="{{ .src }}" alt="{{ .title }}" loading="lazy">
+            <div class="photo-overlay">
+                <span>{{ .title }}</span>
+            </div>
+        </div>
+        {{ end }}
+    </div>
+</section>
+
+<!-- Letters Section -->
+<section id="letters" class="letters-section container">
+    <h2 class="section-title">¿Cómo te sientes hoy?</h2>
+    <div class="mood-selector">
+        {{ range .Site.Data.moods }}
+        <button class="mood-btn" data-mood="{{ .id }}">
+            <span class="mood-emoji">{{ .emoji }}</span>
+            <span class="mood-label">{{ .label }}</span>
+        </button>
+        {{ end }}
+    </div>
+
+    <div id="letter-display" class="letter-container hidden">
+        <div class="letter-card">
+            <div class="letter-content">
+                <p id="letter-text" class="letter-body"></p>
+                <p id="letter-memory" class="letter-memory"></p>
+                <div id="letter-extra" class="letter-extra hidden"></div>
+            </div>
+            <div class="letter-actions">
+                <button id="btn-copy" class="btn-text">Copiar</button>
+                <button id="btn-next" class="btn-text">Otra carta</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Photo Modal -->
+<div id="modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div class="modal-content">
+        <button class="modal-close" aria-label="Cerrar">&times;</button>
+        <div class="modal-body">
+            <img id="modal-img" src="" alt="">
+            <div class="modal-info">
+                <h3 id="modal-title"></h3>
+                <p id="modal-caption"></p>
+                <div class="modal-meta">
+                    <span id="modal-date"></span>
+                    <span id="modal-place"></span>
+                </div>
+                <a id="modal-song" href="#" target="_blank" class="modal-song hidden">
+                    🎵 <span id="modal-song-title"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Data Hidden Element -->
+<div id="site-data" data-photos="{{ .Site.Data.photos | jsonify }}" data-letters="{{ .Site.Data.letters | jsonify }}"
+    data-surprises="{{ .Site.Data.surprises | jsonify }}" style="display:none;"></div>
+
+{{ end }}

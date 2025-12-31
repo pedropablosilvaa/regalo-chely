@@ -1,0 +1,52 @@
+name: Deploy to GCS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  HUGO_VERSION: '0.125.0'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
+      - name: Build
+        run: hugo --minify
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: '${{ secrets.SERVICE_ACCOUNT_EMAIL }}'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy to GCS
+        run: |
+          gsutil -m rsync -r -d -c public gs://${{ secrets.GCS_BUCKET_NAME }}
+          
+      - name: Set Cache-Control
+        run: |
+          gsutil -m setmeta -h "Cache-Control:public, max-age=0, no-cache" gs://${{ secrets.GCS_BUCKET_NAME }}/**/*.html
+          gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, immutable" gs://${{ secrets.GCS_BUCKET_NAME }}/assets/**
+          gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, immutable" gs://${{ secrets.GCS_BUCKET_NAME }}/img/**
