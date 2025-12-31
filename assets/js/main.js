@@ -4,11 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!dataEl) return;
 
     // Parse data safely
-    // --- Data Loading ---
-    const dataEl = document.getElementById('site-data');
-    if (!dataEl) return;
-
-    // Parse data safely
     let letters = [];
     try {
         letters = JSON.parse(dataEl.dataset.letters || '[]');
@@ -157,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 emojiInterval = setInterval(createEmoji, 100);
             } else {
                 buttToggle.textContent = "🍑 Modo tu poto";
-                if (heroSubtitle) heroSubtitle.textContent = "Te amo más de lo que las palabras pueden expresar.";
+                if (heroSubtitle) heroSubtitle.textContent = "Te amo con todo mi corazón amorcito, si tienes alguna duda mira esta página ";
                 // Stop rain
                 clearInterval(emojiInterval);
                 document.querySelectorAll('.emoji-drop').forEach(e => e.remove());
