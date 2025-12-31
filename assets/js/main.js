@@ -207,4 +207,61 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // --- Cursor Trail ---
+    document.addEventListener('mousemove', (e) => {
+        if (!isButtMode) return;
+        if (Math.random() > 0.8) return; // Don't spawn on every pixel
+
+        const trail = document.createElement('div');
+        trail.classList.add('butt-trail');
+        trail.textContent = '🍑';
+        trail.style.left = e.clientX + 'px';
+        trail.style.top = e.clientY + 'px';
+        document.body.appendChild(trail);
+
+        setTimeout(() => trail.remove(), 1000);
+    });
+
+    // --- Spank Interaction ---
+    const imgEl = document.getElementById('letter-img');
+    // Observer to re-attach listener if image changes? Actually the element is static, src changes.
+    // But we need to make sure the element exists when we attach listeners.
+    // The previous code gets element by ID inside showLetter, but the element is static in HTML now.
+
+    // We can attach listener to a static parent or the static image element if it exists in DOM
+    const letterDisplayContainer = document.querySelector('.letter-content');
+
+    if (letterDisplayContainer) {
+        letterDisplayContainer.addEventListener('click', (e) => {
+            if (!isButtMode) return;
+            if (e.target.id === 'letter-img') {
+                const target = e.target;
+
+                // Visual Shake
+                target.classList.remove('spank-effect');
+                void target.offsetWidth; // trigger reflow
+                target.classList.add('spank-effect');
+
+                // Pop-up Text
+                const pop = document.createElement('div');
+                pop.classList.add('spank-pop');
+                pop.textContent = Math.random() > 0.5 ? "¡Plaff!" : "¡Toma!";
+
+                // Position relative to click
+                const rect = target.getBoundingClientRect();
+                const x = e.clientX - rect.left; // Click x inside image
+                const y = e.clientY - rect.top;
+
+                // We need global coordinates for absolute fixed or relative to container
+                // Let's perform it simpler: append to body at page coordinates
+                pop.style.position = 'fixed'; // Override absolute from css for simplicity here or adjust
+                pop.style.left = e.clientX + 'px';
+                pop.style.top = e.clientY + 'px';
+
+                document.body.appendChild(pop);
+                setTimeout(() => pop.remove(), 800);
+            }
+        });
+    }
 });
