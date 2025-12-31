@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
-
-env:
-  HUGO_VERSION: '0.125.0'
 
 jobs:
   deploy:
@@ -18,14 +14,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
           submodules: true
 
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3
+        uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: ${{ env.HUGO_VERSION }}
+          hugo-version: 'latest'
           extended: true
 
       - name: Build
@@ -35,18 +31,12 @@ jobs:
         id: auth
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
-          service_account: '${{ secrets.SERVICE_ACCOUNT_EMAIL }}'
+          workload_identity_provider: '${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-
-      - name: Deploy to GCS
-        run: |
-          gsutil -m rsync -r -d -c public gs://${{ secrets.GCS_BUCKET_NAME }}
-          
-      - name: Set Cache-Control
-        run: |
-          gsutil -m setmeta -h "Cache-Control:public, max-age=0, no-cache" gs://${{ secrets.GCS_BUCKET_NAME }}/**/*.html
-          gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, immutable" gs://${{ secrets.GCS_BUCKET_NAME }}/assets/**
-          gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, immutable" gs://${{ secrets.GCS_BUCKET_NAME }}/img/**
+      - name: Upload to GCS
+        uses: google-github-actions/upload-cloud-storage@v2
+        with:
+          path: 'public'
+          destination: 'www.feliznavidadamorcito.cl'
+          parent: false # Upload contents of public directly to root
