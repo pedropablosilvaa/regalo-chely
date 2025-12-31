@@ -2,27 +2,15 @@
 <!-- Hero Section -->
 <section id="hero" class="hero-section">
     <div class="hero-content fade-in">
+        <button id="butt-toggle" class="butt-toggle-btn">🍑 Modo tu poto</button>
         <h1 class="hero-title">Para Araceli</h1>
-        <p class="hero-subtitle">Te amo más de lo que las palabras pueden expresar.</p>
+        <p class="hero-subtitle" id="hero-subtitle">Te amo más de lo que las palabras pueden expresar.</p>
         <div class="hero-buttons">
-            <a href="#gallery" class="btn btn-primary">Ver fotos</a>
             <a href="#letters" class="btn btn-secondary">Ir a cartas</a>
         </div>
-    </div>
-</section>
-
-<!-- Photo Grid Section -->
-<section id="gallery" class="gallery-section container">
-    <h2 class="section-title">Nuestros Momentos</h2>
-    <div class="photo-grid">
-        {{ range .Site.Data.photos }}
-        <div class="photo-item" data-id="{{ .id }}" role="button" tabindex="0">
-            <img src="{{ .src }}" alt="{{ .title }}" loading="lazy">
-            <div class="photo-overlay">
-                <span>{{ .title }}</span>
-            </div>
-        </div>
-        {{ end }}
+        <a href="https://wa.me/56967294974" target="_blank" class="whatsapp-float">
+            <span>📞 Hablar a mi pololo</span>
+        </a>
     </div>
 </section>
 
@@ -41,6 +29,8 @@
     <div id="letter-display" class="letter-container hidden">
         <div class="letter-card">
             <div class="letter-content">
+                <img id="letter-img" class="letter-img hidden" src="" alt="Recuerdo especial"
+                    style="width: 100%; border-radius: 8px; margin-bottom: 1rem; height: auto;">
                 <p id="letter-text" class="letter-body"></p>
                 <p id="letter-memory" class="letter-memory"></p>
                 <div id="letter-extra" class="letter-extra hidden"></div>

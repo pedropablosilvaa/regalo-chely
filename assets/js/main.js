@@ -123,6 +123,14 @@ document.addEventListener('DOMContentLoaded', () => {
         card.offsetHeight; /* trigger reflow */
         card.style.animation = 'slideIn 0.5s ease-out';
 
+        // Image Logic
+        const imgEl = document.getElementById('letter-img');
+        if (imgEl) {
+            const randomImgId = Math.floor(Math.random() * 23) + 1;
+            imgEl.src = `/img/${randomImgId}.png`;
+            imgEl.classList.remove('hidden');
+        }
+
         letterText.textContent = letter.text;
         letterMemory.textContent = letter.memory ? `Recuerdo: ${letter.memory}` : '';
 
@@ -158,6 +166,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnCopy.textContent = "¡Copiado!";
                 setTimeout(() => btnCopy.textContent = original, 2000);
             });
+        });
+    }
+
+    // --- Butt Mode Logic ---
+    const buttToggle = document.getElementById('butt-toggle');
+    const heroSubtitle = document.getElementById('hero-subtitle');
+    let isButtMode = false;
+    let emojiInterval;
+
+    function createEmoji() {
+        const emoji = document.createElement('div');
+        emoji.classList.add('emoji-drop');
+        emoji.textContent = Math.random() > 0.5 ? '🍑' : '🥰';
+        emoji.style.left = Math.random() * 100 + 'vw';
+        emoji.style.animationDuration = Math.random() * 2 + 3 + 's'; // 3-5s
+        document.body.appendChild(emoji);
+
+        setTimeout(() => {
+            emoji.remove();
+        }, 5000);
+    }
+
+    if (buttToggle) {
+        buttToggle.addEventListener('click', () => {
+            isButtMode = !isButtMode;
+            document.body.classList.toggle('butt-mode');
+
+            if (isButtMode) {
+                buttToggle.textContent = "😇 Modo Serio";
+                if (heroSubtitle) heroSubtitle.textContent = "Me gusta tu poto 🍑";
+                // Start rain
+                emojiInterval = setInterval(createEmoji, 100);
+            } else {
+                buttToggle.textContent = "🍑 Modo tu poto";
+                if (heroSubtitle) heroSubtitle.textContent = "Te amo más de lo que las palabras pueden expresar.";
+                // Stop rain
+                clearInterval(emojiInterval);
+                document.querySelectorAll('.emoji-drop').forEach(e => e.remove());
+            }
         });
     }
 });

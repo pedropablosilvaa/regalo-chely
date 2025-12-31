@@ -1,0 +1,112 @@
+/* Main Style Addition */
+
+/* WhatsApp Button */
+.whatsapp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25d366;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.3s;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.05);
+}
+
+/* Butt Mode Toggle */
+.butt-toggle-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 900;
+}
+
+/* Butt Mode Styles */
+body.butt-mode {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff9a9e' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
+}
+
+body.butt-mode .hero-title {
+    color: #d35400;
+}
+
+body.butt-mode .mood-btn:hover {
+    transform: rotate(5deg) scale(1.1);
+}
+
+/* Emoji Rain Elements */
+.emoji-drop {
+    position: fixed;
+    top: -50px;
+    font-size: 24px;
+    user-select: none;
+    pointer-events: none;
+    animation: drop linear forwards;
+    z-index: 9999;
+}
+
+@keyframes drop {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .butt-toggle-btn {
+        top: 15px;
+        right: 15px;
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .whatsapp-float {
+        bottom: 15px;
+        right: 15px;
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    .whatsapp-float span {
+        display: none;
+        /* Hide text on small screens, show only icon? Or keep text but smaller */
+    }
+
+    .whatsapp-float::after {
+        /* Add icon content if text is hidden, or just keep text */
+        content: "📞";
+        font-size: 1.2rem;
+    }
+
+    /* Better mobile approach: keep text but adjust size */
+    .whatsapp-float span {
+        display: inline;
+        font-size: 0.8rem;
+    }
+
+    .whatsapp-float::after {
+        content: "";
+    }
+}
