@@ -126,8 +126,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Image Logic
         const imgEl = document.getElementById('letter-img');
         if (imgEl) {
-            const randomImgId = Math.floor(Math.random() * 23) + 1;
-            imgEl.src = `/img/${randomImgId}.png`;
+            if (letter.image) {
+                // Use specific image defined in YAML
+                imgEl.src = `/img/${letter.image}`;
+            } else {
+                // Fallback to random image
+                const randomImgId = Math.floor(Math.random() * 23) + 1;
+                imgEl.src = `/img/${randomImgId}.png`;
+            }
             imgEl.classList.remove('hidden');
         }
 
