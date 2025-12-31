@@ -4,62 +4,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!dataEl) return;
 
     // Parse data safely
-    let photos = [], letters = [], surprises = [];
+    // --- Data Loading ---
+    const dataEl = document.getElementById('site-data');
+    if (!dataEl) return;
+
+    // Parse data safely
+    let letters = [];
     try {
-        photos = JSON.parse(dataEl.dataset.photos || '[]');
         letters = JSON.parse(dataEl.dataset.letters || '[]');
-        surprises = JSON.parse(dataEl.dataset.surprises || '[]');
     } catch (e) {
         console.error("Error parsing data", e);
     }
-
-    // --- Modal Logic ---
-    const modal = document.getElementById('modal');
-    const modalOverlay = document.getElementById('modal-overlay');
-    const modalClose = document.querySelector('.modal-close');
-    const photoItems = document.querySelectorAll('.photo-item');
-
-    const modalImg = document.getElementById('modal-img');
-    const modalTitle = document.getElementById('modal-title');
-    const modalCaption = document.getElementById('modal-caption');
-    const modalDate = document.getElementById('modal-date');
-    const modalPlace = document.getElementById('modal-place');
-
-    function openModal(id) {
-        const photo = photos.find(p => p.id == id);
-        if (!photo) return;
-
-        modalImg.src = photo.src;
-        modalTitle.textContent = photo.title;
-        modalCaption.textContent = photo.caption;
-
-        let metaText = photo.date ? photo.date : '';
-        if (photo.place) metaText += (metaText ? ' • ' : '') + photo.place;
-
-        modalDate.textContent = metaText;
-
-        modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden'; // Lock scroll
-    }
-
-    function closeModal() {
-        modal.classList.add('hidden');
-        document.body.style.overflow = '';
-        modalImg.src = ''; // Clear for next time
-    }
-
-    photoItems.forEach(item => {
-        item.addEventListener('click', () => openModal(item.dataset.id));
-        item.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') openModal(item.dataset.id);
-        });
-    });
-
-    if (modalClose) modalClose.addEventListener('click', closeModal);
-    if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
-    });
 
     // --- Letter Logic ---
     const moodBtns = document.querySelectorAll('.mood-btn');
@@ -85,11 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function generateLetter(moodId) {
         let pool = [];
-        if (moodId === 'surprise') {
-            pool = surprises;
-        } else {
-            pool = letters.filter(l => l.moodId === moodId);
-        }
+        pool = letters.filter(l => l.moodId === moodId);
 
         if (pool.length === 0) return null;
 

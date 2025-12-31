@@ -66,7 +66,6 @@
 </div>
 
 <!-- Data Hidden Element -->
-<div id="site-data" data-photos="{{ .Site.Data.photos | jsonify }}" data-letters="{{ .Site.Data.letters | jsonify }}"
-    data-surprises="{{ .Site.Data.surprises | jsonify }}" style="display:none;"></div>
+<div id="site-data" data-letters="{{ .Site.Data.letters | jsonify }}" style="display:none;"></div>
 
 {{ end }}
